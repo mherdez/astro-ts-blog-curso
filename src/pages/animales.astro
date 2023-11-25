@@ -1,0 +1,36 @@
+---
+import Post from '@components/Post.astro';
+import Layout from '@layouts/Layout.astro';
+import Title from '@components/Title.astro';
+
+
+const allPost = await Astro.glob('./posts/animales/*.md');
+
+---
+
+<Layout title="Animals Posts">
+  <Title title="Animals Posts" />
+  <main>
+    { allPost.map((post) => (
+      <Post post={post} />
+    )) }
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+</style>

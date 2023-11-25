@@ -1,0 +1,42 @@
+---
+import Header from '@components/Header.astro';
+
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Post</title>
+	</head>
+	<body>
+		<Header />
+		<div class="container">
+			<slot />
+		</div>
+	</body>
+</html>
+
+
+<style>
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		color: white;
+		font-family: roboto, sans-serif;
+		background: #13151a;
+	}
+	.container {
+		max-width: 800px;
+		margin: 0 auto;
+		font-size: 1.3rem;
+		line-height: 2rem;
+	}
+</style>

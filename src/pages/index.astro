@@ -1,0 +1,44 @@
+---
+import { data } from '@helpers/data.json';
+import Card from '@components/Card.astro';
+import Post from '@components/Post.astro';
+import Usuarios from '@components/Usuarios.astro';
+import Layout from '@layouts/Layout.astro';
+import Title from '@components/Title.astro';
+
+const frutas = ['fresa', 'manzana', 'pera', 'uva', 'sandia', 'melon'];
+
+const allPost = await Astro.glob('./posts/**/*.md');
+
+---
+
+<Layout title="Hola mundo">
+  <Title title="Posts Time" />
+  <main>
+    <!-- <Usuarios />
+    <Card array={frutas}>
+      <p>listado de frutas</p>
+    </Card> -->
+    { allPost.map((post) => (
+      <Post post={post} />
+    )) }
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+</style>
