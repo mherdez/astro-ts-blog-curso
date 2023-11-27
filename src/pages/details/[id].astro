@@ -1,0 +1,155 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+interface Video {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+}
+
+interface Cast {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+
+const { id } = Astro.params;
+const url_poster = 'https://image.tmdb.org/t/p/w500';
+
+const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization:
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNTcwYjI5OWNhMGY4MTkxYjBhM2MzMTQyZWFlZDVmZCIsInN1YiI6IjVkZGVkY2RiNGY1ODAxMDAxNmZiNmQwMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TnHQFx37NmxPdFrpG_R4Zuat-ySby6psK5UVFJiHGOI',
+  },
+};
+
+const response = await fetch(
+  `https://api.themoviedb.org/3/movie/${id}?language=es-ES`,
+  options,
+);
+const movie = await response.json();
+
+console.log(movie);
+
+const videoResponse = await fetch(
+  `https://api.themoviedb.org/3/movie/${id}/videos?language=es-MX`,
+  options,
+);
+const videoData = await videoResponse.json();
+const videos: Video[] = videoData.results.filter(
+  (video: Video) => video.type === 'Trailer',
+);
+
+console.log(videos);
+
+const castResponse = await fetch(
+  `https://api.themoviedb.org/3/movie/${id}/casts?language=en-US`,
+  options,
+);
+const castData = await castResponse.json();
+const cast: Cast[] = castData.cast;
+console.log(cast);
+---
+
+<Layout title="">
+  <h1>{movie.title}</h1>
+  <img src={url_poster + movie.poster_path} alt="" />
+  <p>{movie.overview}</p>
+
+  <section class="cast-container">
+    {
+      cast.map((actor: Cast) => {
+        if( !actor.profile_path ) return;
+        return (
+          <div class="cast">
+            <img src={url_poster + actor.profile_path} alt="" />
+            <div>
+              <h4>{actor.name}</h4>
+              <p>{actor.character}</p>
+            </div>
+          </div>
+        );
+      })
+    }
+  </section>
+
+  {
+    videos.map((video: Video) => (
+      <>
+        <h4>{video.name}</h4>
+        <iframe src={`https://www.youtube.com/embed/${video.key}`}></iframe>
+      </>
+    ))
+  }
+</Layout>
+
+<style>
+  img {
+    width: 300px;
+  }
+  iframe {
+    width: 720px;
+    aspect-ratio: 16/9;
+    border: none;
+  }
+  .cast-container {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    gap: 1.5rem;
+    width: 80%;
+    margin: 0 auto;
+    padding: 0.8rem;
+    overflow-x: scroll;
+    border: 2px solid gray;
+    border-radius: 10px;
+  }
+  .cast {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+  .cast img {
+    width: 100px;
+    border-radius: 10px;
+  }
+  .cast div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cast h4 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .cast p {
+    font-size: 0.7rem;
+    /* overflow: hidden;
+    text-overflow: ellipsis; */
+    color: yellow;
+    width: 80px;
+  }
+</style>

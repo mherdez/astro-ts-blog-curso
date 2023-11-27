@@ -5,6 +5,7 @@ import Post from '@components/Post.astro';
 import Usuarios from '@components/Usuarios.astro';
 import Layout from '@layouts/Layout.astro';
 import Title from '@components/Title.astro';
+import Movies from '@components/Movies.astro';
 
 const frutas = ['fresa', 'manzana', 'pera', 'uva', 'sandia', 'melon'];
 
@@ -13,15 +14,17 @@ const allPost = await Astro.glob('./posts/**/*.md');
 ---
 
 <Layout title="Hola mundo">
-  <Title title="Posts Time" />
+  <!-- <Title title="Posts Time" /> -->
   <main>
     <!-- <Usuarios />
     <Card array={frutas}>
       <p>listado de frutas</p>
     </Card> -->
-    { allPost.map((post) => (
+    <!-- { allPost.map((post) => (
       <Post post={post} />
-    )) }
+    )) } -->
+
+    <Movies />
   </main>
 </Layout>
 
